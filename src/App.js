@@ -4,7 +4,6 @@ import Login from "./scenes/Login";
 import UserList from "./scenes/UserList";
 
 export default function App() {
-    
   const [token, setToken] = useState(localStorage.getItem("token"));
   const [isUser, setIsUser] = useState();
   useEffect(() => {
