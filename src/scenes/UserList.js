@@ -15,8 +15,8 @@ export default function UserList({ token, setToken }) {
       .catch(alert);
   }, [token]);
   const handleLogout = () => {
-    setToken(null);
-    localStorage.setItem("token", null);
+    setToken('');
+    localStorage.setItem("token", '');
   };
   return (
     <>

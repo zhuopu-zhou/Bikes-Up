@@ -15,7 +15,7 @@ export default function Signup({ setToken, setIsUser }) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ email, password: hashedPassword }),
+      body: JSON.stringify({ email, username, password: hashedPassword }),
     })
       .then((response) => response.json())
       .then((data) => {
