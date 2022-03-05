@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export default function UserList({ token, setToken }) {
+export default function UserList({ token, setToken, userid, setChat }) {
   const [userList, setUserList] = useState();
   useEffect(() => {
     fetch("http://localhost:3001/users", {
@@ -11,13 +11,24 @@ export default function UserList({ token, setToken }) {
       },
     })
       .then((response) => response.json())
-      .then((data) => setUserList(data.users))
+      .then((data) => {
+        console.log(data.users)
+        console.log(userid)
+        setUserList(data.users.filter(user => user.id !== userid))
+        console.log(userid)
+      })
       .catch(alert);
-  }, [token]);
+  }, [token, userid]);
   const handleLogout = () => {
-    setToken('');
-    localStorage.setItem("token", '');
+    setToken("");
+    localStorage.setItem("token", "");
   };
+
+  const goToChat = () => {
+    setChat(true);
+    localStorage.setItem("chat", true);
+  };
+
   return (
     <>
       <h1>User List Component</h1>
@@ -27,12 +38,13 @@ export default function UserList({ token, setToken }) {
         userList.map((user) => {
           return (
             <p key={user.id}>
-              {user.email}, {user.userRole}
+              {user.username}, {user.userRole}
             </p>
           );
         })
       )}
       <button onClick={handleLogout}>Logout</button>
+      <button onClick={goToChat}>GoToCHat</button>
     </>
   );
 }

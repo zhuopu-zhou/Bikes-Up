@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 
 const salt = "$2b$10$A7/SX9iqJkE7jUs0vi38Gu";
 
-export default function Login({ setToken, setIsUser }) {
+export default function Login({ setToken, setIsUser, setUserid }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const handleSubmit = (e) => {
@@ -18,6 +18,9 @@ export default function Login({ setToken, setIsUser }) {
     })
       .then((response) => response.json())
       .then((data) => {
+        console.log(data.id);
+        setUserid(data.id);
+        localStorage.setItem("id", data.id);
         setToken(data.token);
         localStorage.setItem("token", data.token);
       })
