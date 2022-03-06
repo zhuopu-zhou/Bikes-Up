@@ -8,40 +8,35 @@ export default function App() {
   const [token, setToken] = useState();
   const [isUser, setIsUser] = useState();
   const [userid, setUserid] = useState();
+  const [chatFriendId, setChatFriendId] = useState();
   const [chat, setChat] = useState();
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+
   useEffect(() => {
     const myToken = localStorage.getItem("token");
     const myChat = localStorage.getItem("chat");
     const myId = localStorage.getItem("id");
-    const myEmail = localStorage.getItem("email");
-    const myPassword = localStorage.getItem("password");
+    const myFriendId = localStorage.getItem("friendId");
+
     setToken(myToken);
     setChat(myChat);
     setUserid(myId);
-    setEmail(myEmail);
-    setPassword(myPassword);
+    setChatFriendId(myFriendId);
   }, []);
   return (
     //apply css to section
-    <section>
+    <section style={{ backgroundColor: "azure", height: "100vh" }}>
       {!token ? (
         isUser ? (
           <Login
             setToken={setToken}
             setIsUser={setIsUser}
             setUserid={setUserid}
-            setEmail={setEmail}
-            setPassword={setPassword}
           />
         ) : (
           <Signup
             setToken={setToken}
             setIsUser={setIsUser}
             setUserid={setUserid}
-            setEmail={setEmail}
-            setPassword={setPassword}
           />
         )
       ) : !chat ? (
@@ -50,9 +45,16 @@ export default function App() {
           setToken={setToken}
           userid={userid}
           setChat={setChat}
+          setChatFriendId={setChatFriendId}
         />
       ) : (
-        <Chat setChat={setChat} email={email} password={password} />
+        <Chat
+          token={token}
+          setChat={setChat}
+          userid={userid}
+          chatFriendId={chatFriendId}
+          setChatFriendId={setChatFriendId}
+        />
       )}
     </section>
   );

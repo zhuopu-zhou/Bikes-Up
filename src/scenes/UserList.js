@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
 
-export default function UserList({ token, setToken, userid, setChat }) {
+export default function UserList({
+  token,
+  setToken,
+  userid,
+  setChat,
+  setChatFriendId,
+}) {
   const [userList, setUserList] = useState();
   useEffect(() => {
     fetch("http://localhost:3001/users", {
@@ -12,10 +18,10 @@ export default function UserList({ token, setToken, userid, setChat }) {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data.users)
-        console.log(userid)
-        setUserList(data.users.filter(user => user.id !== userid))
-        console.log(userid)
+        console.log(data.users);
+        console.log(userid);
+        setUserList(data.users.filter((user) => user.id !== userid));
+        console.log(userid);
       })
       .catch(alert);
   }, [token, userid]);
@@ -29,6 +35,8 @@ export default function UserList({ token, setToken, userid, setChat }) {
     localStorage.setItem("chat", true);
   };
 
+  
+
   return (
     <>
       <h1>User List Component</h1>
@@ -37,14 +45,21 @@ export default function UserList({ token, setToken, userid, setChat }) {
       ) : (
         userList.map((user) => {
           return (
-            <p key={user.id}>
-              {user.username}, {user.userRole}
+            <p key={user.id}
+            onClick={()=>{setChatFriendId(user.id)
+            localStorage.setItem("friendId",user.id)
+            }}
+            >
+              {user.username}||||{user.id}||||
+              <button onClick={goToChat}>GoToCHat</button>
+              
+              
             </p>
           );
         })
       )}
+
       <button onClick={handleLogout}>Logout</button>
-      <button onClick={goToChat}>GoToCHat</button>
     </>
   );
 }

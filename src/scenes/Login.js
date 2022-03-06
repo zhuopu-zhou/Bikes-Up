@@ -27,7 +27,7 @@ export default function Login({ setToken, setIsUser, setUserid }) {
       .catch((error) => alert(error));
   };
   return (
-    <>
+    <div>
       <h1>Login</h1>
       <form onSubmit={handleSubmit}>
         <label>
@@ -49,9 +49,8 @@ export default function Login({ setToken, setIsUser, setUserid }) {
         </label>
         <br />
         <input type="submit" value="Login" />
+        <button onClick={() => setIsUser(false)}>Sign Up</button>
       </form>
-      <br />
-      <button onClick={() => setIsUser(false)}>Sign Up</button>
-    </>
+    </div>
   );
 }
