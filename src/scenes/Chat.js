@@ -1,4 +1,7 @@
 import { useState, useEffect } from "react";
+import React from "react";
+import { db } from "./firebase-config";
+import { collection, getDocs,addDoc, where, query, onSnapshot } from "@firebase/firestore";
 
 export default function Chat({
   setChat,
@@ -7,29 +10,42 @@ export default function Chat({
   setChatFriendId,
   token,
 }) {
-  const [newMessage, setNewmessage] = useState();
-  const [messages, setMessages] = useState();
-  // useEffect(() => {
+  const [messages, setMessages] = useState([]);
+  const msgsCollectionRef = collection(db, "messages");
+  //const q = query(msgsCollectionRef,   where('uids', 'in', ['1','2']));
+  const q = query(msgsCollectionRef,   where('uids', 'array-contains-any', [userid, chatFriendId]));
+  //order q by timeStamp
+  
+  useEffect(() => {
+    const getMessages = async () => {
+      await onSnapshot(q, (snapshot) => {
+      console.log(snapshot.docs);
+      setMessages(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      });
+    };
+    
+    getMessages().then();
+  }, []);
 
-  //   fetch("http://localhost:3001/messages", {
-  //     method: "GET",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       Authorization: token,
-  //     },
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       console.log(data.messages);
-  //       setMessages(data.messages);
-  //     })
-  //     .catch(alert);
-  // }, [token]);
+  console.log(messages);
+  
+  const [newMessage, setNewmessage] = useState();
+  //send new message with both user id and timeStamp
+  const sendNewMsg = async(e)=>{
+    e.preventDefault();
+    await addDoc(msgsCollectionRef,{text:newMessage,uids: [userid, chatFriendId], 
+      uid1:userid,uid2:chatFriendId,
+      timeStamp:0})
+  }
 
   const dummyMessages = [
     { id: "1", username: "matt", text: "hi" },
     { id: "2", username: "mary", text: "good how are you" },
-    { id: "3", username: "mary", text: "had lunch? let's go get some after noon tea and cakes" },
+    {
+      id: "3",
+      username: "mary",
+      text: "had lunch? let's go get some after noon tea and cakes",
+    },
     { id: "4", username: "matt", text: "no" },
     { id: "5", username: "matt", text: "lets go!" },
   ];
@@ -73,7 +89,6 @@ export default function Chat({
     height: "260px",
     backgroundColor: "hsl(201deg 100% 95%)",
   };
-
   const friendChatBox = {
     border: "2px solid hsl(201deg 100% 85%)",
     borderRadius: "0.3em",
@@ -82,7 +97,6 @@ export default function Chat({
     backgroundColor: "hsl(201deg 100% 95%)",
     width: "200px",
   };
-
   const myChatBox = {
     border: "2px solid hsl(201deg 100% 65%)",
     borderRadius: "0.3em",
@@ -93,7 +107,6 @@ export default function Chat({
     position: "relative",
     left: "46px",
   };
-
   const msgInput = {
     outline: "none",
     border: "0.01em solid hsl(200deg 100% 56%)",
@@ -126,20 +139,13 @@ export default function Chat({
       </div>
       <br />
       <section style={list}>
-        {!dummyMessages ? (
+        {!messages ? (
           <h2>Loading...</h2>
         ) : (
-          dummyMessages.map((message) => {
-            if (message.username === "matt") {
-              return (
-                <p style={myChatBox} key={message.id}>
-                  {message.text}||||{message.id}||||
-                </p>
-              );
-            }
+          messages.map((message) => {
             return (
-              <p style={friendChatBox} key={message.id}>
-                {message.text}||||{message.id}||||
+              <p style={myChatBox} key={message.id}>
+                {message.text}
               </p>
             );
           })
@@ -157,7 +163,7 @@ export default function Chat({
           alignItems: "center",
         }}
       >
-        <form onSubmit={() => console.log(newMessage)}>
+        <form onSubmit={(e) => sendNewMsg(e)}>
           <input
             value={newMessage}
             onChange={(e) => setNewmessage(e.target.value)}
