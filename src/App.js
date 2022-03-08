@@ -13,18 +13,27 @@ export default function App() {
 
   useEffect(() => {
     const myToken = localStorage.getItem("token");
-    const myChat = localStorage.getItem("chat");
     const myId = localStorage.getItem("id");
     const myFriendId = localStorage.getItem("friendId");
+    const myChat = localStorage.getItem("chat");
 
     setToken(myToken);
-    setChat(myChat);
     setUserid(myId);
     setChatFriendId(myFriendId);
+    setChat(myChat);
   }, []);
   return (
     //apply css to section
-    <section style={{ backgroundColor: "azure", height: "100vh" }}>
+    <section
+      style={{
+        backgroundColor: "hsl(200deg 100% 56%)",
+        height: "100vh",
+        width: "100vw",
+        display: "flex",
+        justifyContent: "center",
+        position: "relative",
+      }}
+    >
       {!token ? (
         isUser ? (
           <Login
@@ -39,19 +48,21 @@ export default function App() {
             setUserid={setUserid}
           />
         )
-      ) : !chat ? (
-        <UserList
-          token={token}
-          setToken={setToken}
-          userid={userid}
-          setChat={setChat}
-          setChatFriendId={setChatFriendId}
-        />
-      ) : (
+      ) : (chat&&chatFriendId) ? (
         <Chat
           token={token}
           setChat={setChat}
           userid={userid}
+          chatFriendId={chatFriendId}
+          setChatFriendId={setChatFriendId}
+        />
+      ) : (
+        <UserList
+          token={token}
+          setToken={setToken}
+          userid={userid}
+          setUserid={setUserid}
+          setChat={setChat}
           chatFriendId={chatFriendId}
           setChatFriendId={setChatFriendId}
         />
