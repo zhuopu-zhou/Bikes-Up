@@ -1,7 +1,16 @@
 import { useState, useEffect } from "react";
 import React from "react";
 import { db } from "./firebase-config";
-import { collection, getDocs,addDoc, where, query, onSnapshot } from "@firebase/firestore";
+import {
+  collection,
+  getDocs,
+  addDoc,
+  where,
+  query,
+  onSnapshot,
+  serverTimestamp,
+  orderBy,
+} from "@firebase/firestore";
 
 export default function Chat({
   setChat,
@@ -12,43 +21,66 @@ export default function Chat({
 }) {
   const [messages, setMessages] = useState([]);
   const msgsCollectionRef = collection(db, "messages");
-  //const q = query(msgsCollectionRef,   where('uids', 'in', ['1','2']));
-  const q = query(msgsCollectionRef,   where('uids', 'array-contains-any', [userid, chatFriendId]));
-  //order q by timeStamp
-  
+
+  const q1 = query(
+    msgsCollectionRef,
+    // where('chatroomId', '==', '<chatRoomId>'),
+    where("uids", "==", [userid, chatFriendId])
+  );
+
+  const q2 = query(
+    msgsCollectionRef,
+    // where('chatroomId', '==', '<chatRoomId>'),
+    where("uids", "==", [chatFriendId, userid])
+  );
+
+  // const getMessages = async (query) => {
+  //   const data = await getDocs(query);
+  //   return data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+  // };
+
   useEffect(() => {
-    const getMessages = async () => {
-      await onSnapshot(q, (snapshot) => {
-      console.log(snapshot.docs);
-      setMessages(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-      });
-    };
-    
-    getMessages().then();
+    listenForMessages(q1);
+    listenForMessages(q2);
   }, []);
 
-  console.log(messages);
-  
+  const listenForMessages = (query) => {
+    onSnapshot(query, (snapshot) => {
+      setNewMessages(
+        snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+      );
+    });
+  };
+
+  const setNewMessages = (newMessages) => {
+    console.log(newMessages);
+    // filter if they already exist by id;
+    // then you sort them;
+    // newMessages filter out any messages that have the same
+    const filtered = newMessages.filter(text => (text.id.includes(text.id)));
+    setMessages(
+      [...messages, ...filtered].sort((a, b) =>
+        a.timeStamp.seconds > b.timeStamp.seconds ? 1 : -1
+      )
+    );
+    
+  };
+
+ 
+
   const [newMessage, setNewmessage] = useState();
   //send new message with both user id and timeStamp
-  const sendNewMsg = async(e)=>{
+  const sendNewMsg = async (e) => {
     e.preventDefault();
-    await addDoc(msgsCollectionRef,{text:newMessage,uids: [userid, chatFriendId], 
-      uid1:userid,uid2:chatFriendId,
-      timeStamp:0})
-  }
-
-  const dummyMessages = [
-    { id: "1", username: "matt", text: "hi" },
-    { id: "2", username: "mary", text: "good how are you" },
-    {
-      id: "3",
-      username: "mary",
-      text: "had lunch? let's go get some after noon tea and cakes",
-    },
-    { id: "4", username: "matt", text: "no" },
-    { id: "5", username: "matt", text: "lets go!" },
-  ];
+    await addDoc(msgsCollectionRef, {
+      text: newMessage,
+      uids: [userid, chatFriendId],
+      uid1: [userid],
+      uid2: [chatFriendId],
+      timeStamp: serverTimestamp(),
+    });
+    setNewmessage("");
+  };
 
   const goToList = () => {
     setChat(false);
@@ -89,6 +121,7 @@ export default function Chat({
     height: "260px",
     backgroundColor: "hsl(201deg 100% 95%)",
   };
+
   const friendChatBox = {
     border: "2px solid hsl(201deg 100% 85%)",
     borderRadius: "0.3em",
@@ -143,11 +176,24 @@ export default function Chat({
           <h2>Loading...</h2>
         ) : (
           messages.map((message) => {
-            return (
-              <p style={myChatBox} key={message.id}>
-                {message.text}
-              </p>
-            );
+            console.log(message.uid1[0]);
+            if (message.uid1[0] === chatFriendId) {
+              return (
+                <p style={friendChatBox} key={message.id}>
+                  {message.text}
+                  {chatFriendId}\\\
+                  {message.uid1}
+                </p>
+              );
+            } else {
+              return (
+                <p style={myChatBox} key={message.id}>
+                  {message.text}
+                  {chatFriendId}\\\
+                  {message.uid1}
+                </p>
+              );
+            }
           })
         )}
       </section>
