@@ -21,7 +21,7 @@ export default function Chat({
 }) {
   const [messages, setMessages] = useState([]);
   const msgsCollectionRef = collection(db, "messages");
-
+ 
 
   const q1 = query(
     msgsCollectionRef,
@@ -43,7 +43,7 @@ export default function Chat({
   useEffect(() => {
     listenForMessages(q1);
     listenForMessages(q2);
-    //listenForMessages(q3)
+   
   }, []);
 
   const listenForMessages = (query) => {
@@ -74,10 +74,9 @@ export default function Chat({
   //send new message with both user id and timeStamp
   const sendNewMsg = async (e) => {
     e.preventDefault();
-    
     await addDoc(msgsCollectionRef, {
       text: newMessage,
-      uids: [userid,chatFriendId],
+      uids: chatId,
       uid1: [userid],
       uid2: [chatFriendId],
       timeStamp: serverTimestamp(),
@@ -85,13 +84,13 @@ export default function Chat({
     setNewmessage("");
   };
 
+
   const goToList = () => {
     setChat(false);
     localStorage.setItem("chat", false);
     setChatFriendId("");
     localStorage.setItem("friendId", "");
   };
-
   //styling
   const container = {
     position: "absolute",
@@ -124,7 +123,6 @@ export default function Chat({
     height: "260px",
     backgroundColor: "hsl(201deg 100% 95%)",
   };
-
   const friendChatBox = {
     border: "2px solid hsl(201deg 100% 85%)",
     borderRadius: "0.3em",
@@ -159,7 +157,7 @@ export default function Chat({
     backgroundColor: msgBg,
     marginLeft: "1em",
   };
-
+//..............................
   return (
     <section style={container}>
       <h1 style={title}>Chat && Cycle </h1>
@@ -185,7 +183,7 @@ export default function Chat({
                 <p style={friendChatBox} key={message.id}>
                   {message.text}
                   {chatFriendId}\\\
-                  {message.uid1[0]}
+                  {message.uid1}
                 </p>
               );
             } else {
@@ -193,7 +191,7 @@ export default function Chat({
                 <p style={myChatBox} key={message.id}>
                   {message.text}
                   {chatFriendId}\\\
-                  {message.uid1[0]}
+                  {message.uid1}
                 </p>
               );
             }

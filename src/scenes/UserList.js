@@ -11,7 +11,7 @@ export default function UserList({
 }) {
   const [userList, setUserList] = useState();
   useEffect(() => {
-    fetch("http://localhost:3001/users", {
+    fetch("https://auth-test-zz.uc.r.appspot.com/users", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -156,3 +156,5 @@ export default function UserList({
     </section>
   );
 }
+
+
