@@ -22,28 +22,14 @@ export default function Chat({
   const [messages, setMessages] = useState([]);
   const msgsCollectionRef = collection(db, "messages");
 
-
   const q1 = query(
-    msgsCollectionRef,
-    // where('chatroomId', '==', '<chatRoomId>'),
-    where("uids", "==", [userid, chatFriendId])
+    msgsCollectionRef, 
+    where("uids", "==", [ userid,chatFriendId]),
   );
 
-  const q2 = query(
-    msgsCollectionRef,
-    // where('chatroomId', '==', '<chatRoomId>'),
-    where("uids", "==", [chatFriendId, userid]),
-  );
-
-  // const getMessages = async (query) => {
-  //   const data = await getDocs(query);
-  //   return data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-  // };
-
+    //bugs here
   useEffect(() => {
     listenForMessages(q1);
-    listenForMessages(q2);
-    //listenForMessages(q3)
   }, []);
 
   const listenForMessages = (query) => {
@@ -55,29 +41,29 @@ export default function Chat({
   };
 
   const setNewMessages = (newMessages) => {
-    console.log(newMessages);
+    //console.log(newMessages);
     // filter if they already exist by id;
     // then you sort them;
     // newMessages filter out any messages that have the same
-    const filtered = newMessages.filter(text => (text.id.includes(text.id)));
+    const filtered = newMessages.filter((text) => text.id.includes(text.id));
     setMessages(
       [...messages, ...filtered].sort((a, b) =>
         a.timeStamp.seconds > b.timeStamp.seconds ? 1 : -1
       )
     );
-    
   };
-
- 
 
   const [newMessage, setNewmessage] = useState();
   //send new message with both user id and timeStamp
   const sendNewMsg = async (e) => {
     e.preventDefault();
-    
+    let uid = [chatFriendId,userid]
+    uid = uid.sort()
+    console.log(uid)
+
     await addDoc(msgsCollectionRef, {
       text: newMessage,
-      uids: [userid,chatFriendId],
+      uids: uid,
       uid1: [userid],
       uid2: [chatFriendId],
       timeStamp: serverTimestamp(),
@@ -160,6 +146,12 @@ export default function Chat({
     marginLeft: "1em",
   };
 
+  const dummyMsg = [
+    { id:1,uid1: "I3o0GW1Yn7OXtWUpQo0c", text: "hi" },
+    { id:2,uid1: "CcUPvFvXy3eRp0jgnfJE", text: "hello" },
+    { id:3,uid1: "I3o0GW1Yn7OXtWUpQo0c", text: "how are you" },
+  ];
+
   return (
     <section style={container}>
       <h1 style={title}>Chat && Cycle </h1>
@@ -179,21 +171,21 @@ export default function Chat({
           <h2>Loading...</h2>
         ) : (
           messages.map((message) => {
-            console.log(message.uid1[0]);
-            if (message.uid1[0] === chatFriendId) {
+            //console.log(message.uid1[0]);
+            if (message.uid1[0]=== chatFriendId) {
               return (
                 <p style={friendChatBox} key={message.id}>
                   {message.text}
-                  {chatFriendId}\\\
-                  {message.uid1[0]}
+                  {/* {chatFriendId}\\\
+                  {message.uid1[0]} */}
                 </p>
               );
             } else {
               return (
                 <p style={myChatBox} key={message.id}>
                   {message.text}
-                  {chatFriendId}\\\
-                  {message.uid1[0]}
+                  {/* {chatFriendId}\\\
+                  {message.uid1[0]} */}
                 </p>
               );
             }
