@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import React from "react";
 import { db } from "./firebase-config";
 import {
@@ -19,6 +19,7 @@ export default function Chat({
   setChatFriendId,
   token,
 }) {
+  const dummy = useRef();
   const [messages, setMessages] = useState([]);
   const msgsCollectionRef = collection(db, "messages");
 
@@ -33,9 +34,7 @@ export default function Chat({
     );
 
     onSnapshot(q1, (snapshot) => {
-      setMessages(
-        snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-      );
+      setMessages(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     });
 
     // const data = await getDocs(q1);
@@ -93,6 +92,7 @@ export default function Chat({
       timeStamp: serverTimestamp(),
     });
     setNewmessage("");
+    dummy.current.scrollIntoView({ behavior: "smooth" });
   };
 
   const goToList = () => {
@@ -198,19 +198,25 @@ export default function Chat({
             //console.log(message.uid1[0]);
             if (message.uid1[0] === chatFriendId) {
               return (
-                <p style={friendChatBox} key={message.id}>
-                  {message.text}
-                  {/* {chatFriendId}\\\
+                <>
+                  <p style={friendChatBox} key={message.id}>
+                    {message.text}
+                    {/* {chatFriendId}\\\
                   {message.uid1[0]} */}
-                </p>
+                  </p>
+                  <span ref={dummy}></span>
+                </>
               );
             } else {
               return (
-                <p style={myChatBox} key={message.id}>
-                  {message.text}
-                  {/* {chatFriendId}\\\
+                <>
+                  <p style={myChatBox} key={message.id}>
+                    {message.text}
+                    {/* {chatFriendId}\\\
                   {message.uid1[0]} */}
-                </p>
+                  </p>
+                  <span ref={dummy}></span>
+                </>
               );
             }
           })
