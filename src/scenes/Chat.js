@@ -22,44 +22,68 @@ export default function Chat({
   const [messages, setMessages] = useState([]);
   const msgsCollectionRef = collection(db, "messages");
 
-  const q1 = query(
-    msgsCollectionRef, 
-    where("uids", "==", [ userid,chatFriendId]),
-  );
+  const getMsg = async (Ref) => {
+    let uid = [chatFriendId, userid];
+    uid = uid.sort();
+    const q1 = query(
+      Ref,
+      //where("uids", "==", [chatFriendId,userid]),
+      where("uids", "==", [...uid]),
+      orderBy("timeStamp")
+    );
 
-    //bugs here
-  useEffect(() => {
-    listenForMessages(q1);
-  }, []);
-
-  const listenForMessages = (query) => {
-    onSnapshot(query, (snapshot) => {
-      setNewMessages(
+    onSnapshot(q1, (snapshot) => {
+      setMessages(
         snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
       );
     });
+
+    // const data = await getDocs(q1);
+    // setMessages(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
   };
 
-  const setNewMessages = (newMessages) => {
-    //console.log(newMessages);
-    // filter if they already exist by id;
-    // then you sort them;
-    // newMessages filter out any messages that have the same
-    const filtered = newMessages.filter((text) => text.id.includes(text.id));
-    setMessages(
-      [...messages, ...filtered].sort((a, b) =>
-        a.timeStamp.seconds > b.timeStamp.seconds ? 1 : -1
-      )
-    );
-  };
+  useEffect(() => {
+    getMsg(msgsCollectionRef);
+  }, []);
+
+  // const q1 = query(
+  //   msgsCollectionRef,
+  //   where("uids", "==", [ userid,chatFriendId]),
+  // );
+
+  //   //bugs here
+  // useEffect(() => {
+  //   listenForMessages(q1);
+  // }, []);
+
+  // const listenForMessages = (query) => {
+  //   onSnapshot(query, (snapshot) => {
+  //     setNewMessages(
+  //       snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+  //     );
+  //   });
+  // };
+
+  // const setNewMessages = (newMessages) => {
+  //   //console.log(newMessages);
+  //   // filter if they already exist by id;
+  //   // then you sort them;
+  //   // newMessages filter out any messages that have the same
+  //   const filtered = newMessages.filter((text) => text.id.includes(text.id));
+  //   setMessages(
+  //     [...messages, ...filtered].sort((a, b) =>
+  //       a.timeStamp.seconds > b.timeStamp.seconds ? 1 : -1
+  //     )
+  //   );
+  // };
 
   const [newMessage, setNewmessage] = useState();
   //send new message with both user id and timeStamp
   const sendNewMsg = async (e) => {
     e.preventDefault();
-    let uid = [chatFriendId,userid]
-    uid = uid.sort()
-    console.log(uid)
+    let uid = [chatFriendId, userid];
+    uid = uid.sort();
+    console.log(uid);
 
     await addDoc(msgsCollectionRef, {
       text: newMessage,
@@ -147,9 +171,9 @@ export default function Chat({
   };
 
   const dummyMsg = [
-    { id:1,uid1: "I3o0GW1Yn7OXtWUpQo0c", text: "hi" },
-    { id:2,uid1: "CcUPvFvXy3eRp0jgnfJE", text: "hello" },
-    { id:3,uid1: "I3o0GW1Yn7OXtWUpQo0c", text: "how are you" },
+    { id: 1, uid1: "I3o0GW1Yn7OXtWUpQo0c", text: "hi" },
+    { id: 2, uid1: "CcUPvFvXy3eRp0jgnfJE", text: "hello" },
+    { id: 3, uid1: "I3o0GW1Yn7OXtWUpQo0c", text: "how are you" },
   ];
 
   return (
@@ -172,7 +196,7 @@ export default function Chat({
         ) : (
           messages.map((message) => {
             //console.log(message.uid1[0]);
-            if (message.uid1[0]=== chatFriendId) {
+            if (message.uid1[0] === chatFriendId) {
               return (
                 <p style={friendChatBox} key={message.id}>
                   {message.text}
