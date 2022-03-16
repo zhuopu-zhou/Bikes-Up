@@ -1,0 +1,95 @@
+.container {
+  position: absolute;
+  top: 5vh;
+  background-color: hsl(210deg 29% 97%);
+  height: 90vh;
+  width: 60vh;
+  border-radius: 5%;
+  box-shadow: 0 0 5px 0 hsl(0deg 0% 30%);
+  border: 2px solid hsl(226deg 47% 85%);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #1c284e;
+  width: 60vh;
+  height: 90vh;
+}
+
+.header {
+  text-align: center;
+  color: #1c284e;
+  font-style: oblique;
+  font-weight: bolder;
+  font-family: "Akaya Telivigala", cursive;
+  font-family: "Dancing Script", cursive;
+  font-family: "Fredoka", sans-serif;
+  margin: 11vh;
+  font-size: 7vh;
+}
+
+.subheader {
+  margin-bottom: 1vh;
+  font-size: 2vh;
+  font-family: "Akaya Telivigala", cursive;
+  font-family: "Dancing Script", cursive;
+  font-family: "Fredoka", sans-serif;
+  font-family: "Raleway", sans-serif;
+}
+
+.input {
+  outline: none;
+  border: 1px solid rgb(28 40 78);
+  border-radius: 1vh;
+  color: rgb(28 40 78);
+  margin-bottom: 2vh;
+  margin-bottom: 4vh;
+  width: 35vh;
+  height: 4vh;
+  font-size: 3vh;
+}
+
+::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  font-size: 3vh;
+  opacity: 1; /* Firefox */
+}
+
+.btn {
+  padding: 0.5vh 3vh;
+  border-radius: 1vh;
+  border: 1px solid hsl(207deg 70% 80%);
+  background-color: hsl(207deg 70% 56%);
+  box-shadow: 0 0 1vh 0 hsl(207deg 70% 46%);
+  color: #f6f8fa;
+  font-weight: bolder;
+  font-family: "Akaya Telivigala", cursive;
+  font-family: "Dancing Script", cursive;
+  font-family: "Fredoka", sans-serif;
+  font-family: "Raleway", sans-serif;
+  font-size: 3vh;
+  margin-bottom: 5vh;
+}
+
+.btn:hover {
+  background-color: hsl(207deg 70% 46%);
+  box-shadow: 0 0 1vh 0 hsl(207deg 70% 26%);
+}
+
+.btnLogin {
+  padding: 1vh 2vh;
+  border: 0px;
+  background-color: hsl(216deg 33% 97%);
+  color: #1c284e;
+  font-weight: bolder;
+  font-family: "Akaya Telivigala", cursive;
+  font-family: "Dancing Script", cursive;
+  font-family: "Fredoka", sans-serif;
+  font-size: 2vh;
+}
+
+.btnLogin:hover {
+  color: hsl(226deg 47% 41%);
+}

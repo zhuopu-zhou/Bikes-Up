@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import "./UserList.css";
 
 export default function UserList({
   token,
@@ -26,7 +27,7 @@ export default function UserList({
         console.log(userid);
       })
       .catch(alert);
-  }, [token, userid]);
+  }, [token, userid]); //add userList to dependency
   const handleLogout = () => {
     setToken("");
     localStorage.setItem("token", "");
@@ -39,47 +40,6 @@ export default function UserList({
     localStorage.setItem("chat", true);
   };
 
-  //styling
-  const container = {
-    position: "absolute",
-    top: "5vh",
-    backgroundColor: "hsl(200deg 100% 50%)",
-    height: "400px",
-    width: "250px",
-    borderRadius: "5%",
-    boxShadow: "0 0 5px 0 hsl(0deg 0% 30%)",
-    border: "2px solid hsl(200deg 100% 85%)",
-  };
-  const title = {
-    textAlign: "center",
-    color: "white",
-    fontStyle: "italic",
-    fontFamily: "cursive",
-    fontSize: "x-large",
-    margin: "0px",
-    marginTop: "10px",
-  };
-  const [logBg, setLogBg] = useState("hsl(201deg 100% 85%)");
-  const logout = {
-    borderRadius: "1em",
-    border: "1px solid white",
-    color: "white",
-    backgroundColor: logBg,
-  };
-  const list = {
-    overflow: "scroll",
-    height: "260px",
-    backgroundColor: "hsl(201deg 100% 95%)",
-  };
-  const userbox = {
-    border: "2px solid hsl(201deg 100% 85%)",
-    borderRadius: "0.3em",
-    margin: "0px",
-    marginBottom: "3px",
-    display: "flex",
-    justifyContent: "space-between",
-    backgroundColor: "hsl(201deg 100% 95%)",
-  };
   const text = {
     backgroundColor: "hsl(201deg 100% 85%)",
     border: "1px solid white",
@@ -97,35 +57,18 @@ export default function UserList({
   };
 
   return (
-    <section style={container}>
-      <h1 style={title}>CYCLE UP</h1>
-      <div style={{ width: "250px", backgroundColor: "hsl(201deg 100% 85%)" }}>
-        <button
-          style={logout}
-          onClick={handleLogout}
-          onMouseEnter={() => setLogBg("hsl(201deg 100% 55%)")}
-          onMouseLeave={() => setLogBg("hsl(201deg 100% 85%)")}
-        >
-          Logout
-        </button>
+    <section className="container">
+      <div className="userListHeader">
+        <h1 className="userTitle">BIKE'S UP</h1>
       </div>
-      <br />
 
-      <section style={list}>
+      <section className="userList">
         {!userList ? (
           <h2>Loading...</h2>
         ) : (
           userList.map((user) => {
             return (
-              <div
-                key={user.id}
-                // onClick={() => {
-                //   setChatFriendId(user.id);
-                //   localStorage.setItem("friendId", user.id);
-                // }}
-                style={userbox}
-              >
-                <div style={text}>{user.username}</div>
+              <div key={user.id} className="userBox">
                 <button
                   onMouseEnter={() => {
                     setChatFriendId(user.id);
@@ -136,25 +79,29 @@ export default function UserList({
                     localStorage.setItem("friendId", "");
                   }}
                   onClick={goToChat}
-                  style={chatBtn}
+                  className="chatBtn"
                 >
-                  chat
+                  <img className="img"  src="https://idronline.org/wp-content/uploads/2021/01/Screen-Shot-2019-02-19-at-1.23.40-PM-300x300-3.jpg" alt="dummyProfile"/>
+                  <div className="userSide">
+                    <div className="name">{user.username}</div>
+                    <div className="chat">Tap to chat</div>
+                  </div>
                 </button>
               </div>
             );
           })
         )}
       </section>
-      <div
-        style={{
-          width: "250px",
-          height: "2em",
-          backgroundColor: "hsl(201deg 100% 85%)",
-          marginTop: "0.5em",
-        }}
-      ></div>
+      <div className="userFooter">
+        <div className="line"></div>
+        <div className="logoutBar">
+          <button className="logoutBtn" onClick={handleLogout}>
+            Logout
+          </button>
+        </div>
+        <div className="line"></div>
+        <div className="line"></div>
+      </div>
     </section>
   );
 }
-
-

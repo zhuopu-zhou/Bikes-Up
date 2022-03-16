@@ -26,7 +26,7 @@ export default function App() {
     //apply css to section
     <section
       style={{
-        backgroundColor: "hsl(200deg 100% 56%)",
+        backgroundColor: "#1c284e",
         height: "100vh",
         width: "100vw",
         display: "flex",

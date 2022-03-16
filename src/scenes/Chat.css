@@ -1,0 +1,167 @@
+.container {
+  position: absolute;
+  top: 5vh;
+  background-color: hsl(210deg 29% 97%);
+  height: 90vh;
+  width: 60vh;
+  border-radius: 1vh;
+  box-shadow: 0 0 5px 0 hsl(0deg 0% 30%);
+  border: 0.1vh solid hsl(226deg 47% 85%);
+}
+
+.chatHeader {
+  display: flex;
+  font-size: 4vh;
+  color: #f5f7fa;
+  background-color: #1b284e;
+  border-radius: 1vh 1vh 0 0;
+  font-family: "Fredoka", sans-serif;
+  height: 10vh;
+  width: 60vh;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title {
+  margin: 0px;
+  font-size: 7vh;
+  width: 40vh;
+}
+
+.userDiv {
+  text-align: initial;
+  width: fit-content;
+}
+
+.userBtn {
+  padding: 0.5vh 2vh;
+  border: 0px;
+  background-color: #1c284e;
+  color: hsl(216deg 33% 97%);
+  font-family: "Fredoka", sans-serif;
+  font-size: 3vh;
+}
+
+.userBtn:hover {
+  background-color: hsl(216deg 33% 97%);
+  color: #1c284e;
+}
+
+.chatList {
+  overflow: scroll;
+  height: 70vh;
+  width: 60vh;
+  background-color: "hsl(201deg 100% 95%)";
+}
+
+/* .avatarBox{
+    height: 5vh;
+    width: 5vh;
+    background-color: red;
+    margin: 0vh;
+} */
+
+.myChatbox {
+  border: 0.1vh solid hsl(225deg 49% 51%);
+  border-radius: 4vh;
+  margin-top: 1vh;
+  margin-bottom: 2vh;
+  margin-right: 1vh;
+  width: fit-content;
+  max-width: 30vh;
+  position: relative;
+  background-color: rgb(27 40 78);
+  color: white;
+  font-size: 3vh;
+  padding: 1vh 2.5vh;
+  font-family: "Raleway", sans-serif;
+  word-break: break-word;
+}
+
+.myChatbox:hover {
+  background-color: rgb(245 247 250);
+  color: #1b284e;
+}
+
+.myChatBar {
+  width: 60vh;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.friendChatbox {
+  border: 0.1vh solid hsl(225deg 49% 51%);
+  border-radius: 4vh;
+  margin-top: 1vh;
+  margin-bottom: 2vh;
+  margin-left: 1vh;
+  width: fit-content;
+  max-width: 30vh;
+  position: relative;
+  background-color: rgb(245 247 250);
+  color: #1b284e;
+  font-size: 3vh;
+  padding: 1vh 2.5vh;
+  font-family: "Raleway", sans-serif;
+  word-break: break-word;
+}
+
+.friendChatbox:hover {
+  background-color: rgb(27 40 78);
+  color: white;
+}
+
+.friendChatBar {
+  width: 60vh;
+  display: flex;
+  justify-content: start;
+}
+
+.footer {
+  width: 60vh;
+  height: 10vh;
+  background-color: rgb(27 40 78);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0vh 0vh 1vh 1vh;
+}
+
+.msg {
+  outline: none;
+  border: 0.01em solid rgb(31, 180, 255);
+  background-color: rgb(229, 246, 255);
+  border-radius: 0.7em;
+  font-family: sans-serif;
+  width: 40vh;
+  height: 5vh;
+  font-size: 3vh;
+  font-family: "Raleway", sans-serif;
+}
+
+::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  font-size: 3vh;
+  opacity: 1; /* Firefox */
+}
+
+.sendBtn {
+  border-radius: 1vh;
+  border: 1px solid white;
+  color: white;
+  background-color: rgb(179, 228, 255);
+  margin-left: 1em;
+  padding: 0.5vh 2vh;
+  border: 0px;
+  background-color: #3f96dd;
+  color: hsl(216deg 33% 97%);
+  font-family: "Fredoka", sans-serif;
+  font-size: 3vh;
+  margin: 3vh;
+}
+
+.sendBtn:hover {
+  background-color: hsl(207deg 70% 46%);
+  box-shadow: 0 0 1vh 0 hsl(207deg 70% 26%);
+}
