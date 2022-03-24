@@ -14,6 +14,8 @@ import {
   doc,
   limit,
 } from "@firebase/firestore";
+import { formatRelative } from "date-fns";
+
 import "./Chat.css";
 
 export default function Chat({
@@ -101,27 +103,36 @@ export default function Chat({
             //console.log(message.uid1[0]);
             if (message.uid1[0] === chatFriendId) {
               return (
-                <div className="friendChatBar">
-                  {/* <p className="avatarBox">zz</p> */}
-                  <p className="friendChatbox" key={message.id}>
-                    {message.text} 
-                    {/* {chatFriendId}\\\
-                  {message.uid1[0]} */}
-                  </p>
-                  <span ref={dummy}></span>
+                <div>
+                  <div className="friendChatBar">
+                    <p className="friendChatbox" key={message.id}>
+                      {message.text}
+                    </p>
+
+                    <span ref={dummy}></span>
+                  </div>
+                  <div className="friendChatTime">
+                    {message.timeStamp
+                      ? formatRelative(message.timeStamp.toDate(), new Date())
+                      : "..."}
+                  </div>
                 </div>
               );
             } else {
               return (
-                <div className="myChatBar">
-                  
-                  <p className="myChatbox" key={message.id}>
-                    {message.text} 
-                    {/* {chatFriendId}\\\
-                  {message.uid1[0]} */}
-                  </p>
-                  {/* <p className="avatarBox">AB</p> */}
-                  <span ref={dummy}></span>
+                <div>
+                  <div className="myChatBar">
+                    <p className="myChatbox" key={message.id}>
+                      {message.text}
+                    </p>
+
+                    <span ref={dummy}></span>
+                  </div>
+                  <div className="myChatTime">
+                    {message.timeStamp
+                      ? formatRelative(message.timeStamp.toDate(), new Date())
+                      : "..."}
+                  </div>
                 </div>
               );
             }

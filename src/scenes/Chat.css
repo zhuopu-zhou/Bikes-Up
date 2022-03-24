@@ -90,6 +90,13 @@
   justify-content: flex-end;
 }
 
+.myChatTime{
+  text-align: end;
+  font-size: 1.5vh;
+  padding-right: 1vh;
+  font-family: "Avenir-Light";
+}
+
 .friendChatbox {
   border: 0.1vh solid hsl(225deg 49% 51%);
   border-radius: 4vh;
@@ -116,6 +123,12 @@
   width: 60vh;
   display: flex;
   justify-content: start;
+}
+
+.friendChatTime{
+  font-size: 1.5vh;
+  padding-left: 1vh;
+  font-family: "Avenir-Light";
 }
 
 .footer {
